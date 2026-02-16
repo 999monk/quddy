@@ -1,0 +1,43 @@
+# Rust
+target/
+Cargo.lock
+**/*.rs.bk
+*.pdb
+
+# Agent/AI files
+AGENTS.md
+GEMINI.md
+project.md
+.cursorrules
+.cursor/
+
+# Environment files
+.env
+.env.local
+.env.*
+*.local
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.vs/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Application data (runtime files)
+*.log
+output.txt
+quddy.sock
+
+# Test files
+*.test
+*.tmp
+
+# Documentation build
+doc/
