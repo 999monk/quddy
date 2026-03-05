@@ -27,5 +27,20 @@ pub fn extract_text(img: &DynamicImage, config: &OcrConfig) -> Result<String> {
         anyhow::bail!("OCR engine did not detect any text in the selected region.");
     }
 
-    Ok(text.trim().to_string())
+    Ok(normalize_whitespace(text.trim()))
+}
+
+fn normalize_whitespace(text: &str) -> String {
+    text.split("\n\n")
+        .map(|paragraph| {
+            paragraph
+                .lines()
+                .map(str::trim)
+                .filter(|line| !line.is_empty())
+                .collect::<Vec<_>>()
+                .join(" ")
+        })
+        .filter(|paragraph| !paragraph.is_empty())
+        .collect::<Vec<_>>()
+        .join("\n\n")
 }
