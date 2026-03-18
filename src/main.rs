@@ -7,7 +7,7 @@ pub mod ocr;
 pub mod translate;
 
 use crate::constants::socket_path;
-use anyhow::{bail, Context, Result};
+use anyhow::{Context, Result, bail};
 use clap::{Parser, Subcommand};
 
 #[derive(Parser)]

@@ -51,11 +51,6 @@ fn write_translation(translation: &str) -> Result<()> {
     Ok(())
 }
 
-/// Default socket path in the user's runtime directory.
-pub fn default_socket_path() -> Result<PathBuf> {
-    Ok(constants::socket_path())
-}
-
 /// Runs the daemon loop, listening for commands on the Unix socket.
 pub fn run_daemon(config: &Config, socket_path: &PathBuf) -> Result<()> {
     // Ensure the runtime directory exists
@@ -111,7 +106,7 @@ pub fn run_daemon(config: &Config, socket_path: &PathBuf) -> Result<()> {
     }
 
     // Cleanup socket
-    if socket_path.exists() && let Err(e) = std::fs::remove_file(socket_path) {
+    if let Err(e) = std::fs::remove_file(socket_path) {
         eprintln!("Warning: Failed to remove socket file: {}", e);
     }
 

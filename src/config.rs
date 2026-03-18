@@ -81,7 +81,19 @@ impl Config {
         let config: Config = toml::from_str(&config_str)
             .with_context(|| format!("Failed to parse config file at {:?}", config_path))?;
 
+        config.validate()?;
+
         Ok(config)
+    }
+
+    fn validate(&self) -> Result<()> {
+        if self.ocr.psm_mode > 13 {
+            anyhow::bail!(
+                "PSM mode must be between 0 and 13, got {}",
+                self.ocr.psm_mode
+            );
+        }
+        Ok(())
     }
 
     /// Saves the current configuration to the config file.

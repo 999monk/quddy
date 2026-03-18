@@ -1,6 +1,6 @@
 use crate::config::CaptureConfig;
 use anyhow::{Context, Result};
-use image::{open as open_image, DynamicImage};
+use image::{DynamicImage, open as open_image};
 use std::process::Command;
 use tempfile::NamedTempFile;
 

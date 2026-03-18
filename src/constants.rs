@@ -15,7 +15,7 @@ pub const OUTPUT_FILENAME: &str = "output.txt";
 pub const LOG_FILENAME: &str = "quddy.log";
 
 /// Buffer size for socket communication
-pub const BUFFER_SIZE: usize = 4096;
+pub const BUFFER_SIZE: usize = 65536;
 
 /// Socket timeout in seconds
 pub const SOCKET_TIMEOUT_SECS: u64 = 30;

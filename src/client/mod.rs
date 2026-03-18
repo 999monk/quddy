@@ -1,7 +1,7 @@
 //! Client module for communicating with the daemon.
 
 use crate::constants::{BUFFER_SIZE, SOCKET_TIMEOUT_SECS, WRITE_TIMEOUT_SECS};
-use anyhow::{bail, Context, Result};
+use anyhow::{Context, Result, bail};
 use std::io::{Read, Write};
 use std::os::unix::net::UnixStream;
 use std::path::Path;

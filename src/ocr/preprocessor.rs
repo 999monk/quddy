@@ -1,4 +1,4 @@
-use image::{imageops, DynamicImage, ImageBuffer, Luma};
+use image::{DynamicImage, ImageBuffer, Luma, imageops};
 
 pub fn preprocess_for_ocr(img: DynamicImage) -> DynamicImage {
     let mut luma_img: ImageBuffer<Luma<u8>, Vec<u8>> = img.to_luma8();
