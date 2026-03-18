@@ -177,34 +177,50 @@ fn handle_capture(config: &Config) -> String {
                     }
                 }
                 Err(e) => {
-                    if e.to_string().contains("did not detect any text") {
-                        if let Err(log_e) = log("CAPTURE: No text detected") {
-                            eprintln!("Failed to log: {}", log_e);
+                    if let Some(msg) = e.downcast_ref::<&str>() {
+                        if msg.contains("did not detect any text") {
+                            if let Err(log_e) = log("CAPTURE: No text detected") {
+                                eprintln!("Failed to log: {}", log_e);
+                            }
+                            return "ERROR: No text detected".to_string();
                         }
-                        "ERROR: No text detected".to_string()
-                    } else {
-                        let err_msg = format!("OCR failed - {}", e);
-                        if let Err(log_e) = log(&format!("CAPTURE ERROR: {}", err_msg)) {
-                            eprintln!("Failed to log: {}", log_e);
+                    } else if let Some(msg) = e.downcast_ref::<String>() {
+                        if msg.contains("did not detect any text") {
+                            if let Err(log_e) = log("CAPTURE: No text detected") {
+                                eprintln!("Failed to log: {}", log_e);
+                            }
+                            return "ERROR: No text detected".to_string();
                         }
-                        format!("ERROR: {}", err_msg)
                     }
+                    let err_msg = format!("OCR failed - {}", e);
+                    if let Err(log_e) = log(&format!("CAPTURE ERROR: {}", err_msg)) {
+                        eprintln!("Failed to log: {}", log_e);
+                    }
+                    format!("ERROR: {}", err_msg)
                 }
             }
         }
         Err(e) => {
-            if e.to_string().contains("cancelled") {
-                if let Err(log_e) = log("CAPTURE: User cancelled") {
-                    eprintln!("Failed to log: {}", log_e);
+            if let Some(msg) = e.downcast_ref::<&str>() {
+                if msg.contains("cancelled") {
+                    if let Err(log_e) = log("CAPTURE: User cancelled") {
+                        eprintln!("Failed to log: {}", log_e);
+                    }
+                    return "CANCELLED".to_string();
                 }
-                "CANCELLED".to_string()
-            } else {
-                let err_msg = format!("Capture failed - {}", e);
-                if let Err(log_e) = log(&format!("CAPTURE ERROR: {}", err_msg)) {
-                    eprintln!("Failed to log: {}", log_e);
+            } else if let Some(msg) = e.downcast_ref::<String>() {
+                if msg.contains("cancelled") {
+                    if let Err(log_e) = log("CAPTURE: User cancelled") {
+                        eprintln!("Failed to log: {}", log_e);
+                    }
+                    return "CANCELLED".to_string();
                 }
-                format!("ERROR: {}", err_msg)
             }
+            let err_msg = format!("Capture failed - {}", e);
+            if let Err(log_e) = log(&format!("CAPTURE ERROR: {}", err_msg)) {
+                eprintln!("Failed to log: {}", log_e);
+            }
+            format!("ERROR: {}", err_msg)
         }
     }
 }

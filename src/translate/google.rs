@@ -33,13 +33,18 @@ pub fn translate(text: &str, config: &TranslationConfig) -> Result<String> {
         .json()
         .context("Failed to parse JSON response from Google Translate")?;
 
-    let translation = json[0]
-        .as_array()
+    let translation_array = json
+        .get(0)
+        .and_then(|v| v.as_array())
         .context("Unexpected JSON structure in Google Translate API response")?;
 
-    let full_translation: String = translation
+    let full_translation: String = translation_array
         .iter()
-        .filter_map(|part| part[0].as_str())
+        .filter_map(|part| {
+            part.as_array()
+                .and_then(|arr| arr.get(0))
+                .and_then(|v| v.as_str())
+        })
         .collect::<Vec<_>>()
         .join("");
 
